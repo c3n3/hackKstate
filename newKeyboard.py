@@ -38,7 +38,7 @@
 
 from pad4pi import rpi_gpio
 import time
-import output
+from output import output
 
 class buttons():
     def __init__(self):
