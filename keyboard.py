@@ -33,11 +33,12 @@ class keyboard():
     def readCol(self):
         colin = []
         for index, id in enumerate(self.col):
-            if (GPIO.input(id))
+            if GPIO.input(id):
                 rowin.append(index)
         if len(colin) > 1:
             return "fuck off"
-        else return colin[0]
+        else: 
+            return colin[0]
     def readButton(self):
         self.rowOut()
         c = self.readCol()
