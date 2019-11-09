@@ -82,8 +82,9 @@ class utility():
         strfunction = strfunction.replace(' ','')
 
         #check if its an assignment instead of an expression
-        if (strfunction[:2] == "x="):
+        if (strfunction[1] == "="):
             assignment = True
+            var = strfunction[0].upper()
             strfunction = strfunction[2:]   #remove the assignment for parsing
 
         #replace pretty things with functional things
@@ -139,7 +140,7 @@ class utility():
 
         #if its an assignment, say so
         else:
-            strassign = "X = " + strfunction
+            strassign = var + " = " + strfunction
             exec(strassign, globals())
 
             return (None)
@@ -190,18 +191,26 @@ class utility():
     def setRadiansMode(self, isOn):
         self.radians = isOn
 
+    def executeStringFunction(self,strfunction):
+        fun = self.convertStringToFunction(strfunction)
+        #print(fun(0))
+        return fun(0)
+
 util = utility()
 util.setRadiansMode(True)
 func = util.convertStringToFunction("55-x^2^2 /10!")
 
-util.convertStringToFunction("x=5")
+util.executeStringFunction("55-12")
 
-print(X)
+#util.convertStringToFunction("a=15")
+#print(A)
 
-print(func(9))
-print(util.defIntegrate(func,0,1))
-print(util.defDerivative(func,1))
-
-print(util.decToFraction(pi))
-
-print(util.summation(func,0,3))
+# print(X)
+#
+# print(func(9))
+# print(util.defIntegrate(func,0,1))
+# print(util.defDerivative(func,1))
+#
+# print(util.decToFraction(pi))
+#
+# print(util.summation(func,0,3))
