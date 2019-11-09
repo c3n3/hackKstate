@@ -24,7 +24,7 @@ class keyboard():
     def readRow(self):
         rowin = []
         for index, id in enumerate(self.row):
-            if (GPIO.input(id))
+            if GPIO.input(id)
                 rowin.append(index)
         if len(rowin) > 1:
             return "fuck off"
