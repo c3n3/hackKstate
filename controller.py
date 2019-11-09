@@ -10,32 +10,41 @@ class controller():
         self.executable = ""
         self.display = ""
         self.tempdisplay = ""
+
         self.menu = 'Main'      #Main,2nd,Alpha,Math
         self.func = 'None'      #None,defInt,defDer,Sum,decToFrac
-        self.selectedline = 0
-        self.cursor = 0 #index of cursor
+
+
+        self.selectedline = 0   #To scroll through different functions
+        self.index = 0 #index of selection
         self.window = [0,15]
 
-        self.util = utility()
-        self.buttons = buttons()
+        #create objects for useful functions
+        self.util = utility()                                   #For calculations and parsing
+        self.buttons = buttons()                                #To read from buttons
         self.buttons.setHandler(self.processButtonPress())
-        self.output = output()
+        self.output = output()                                  #To print to screen
 
 
+    #Activates whenever a button is pressed with key as parameter
     def processButtonPress(self, keyPressed):
 
-
+        #Switch between different screens or keypress configurations
         if (keyPressed == "2nd"):
             if (self.menu == '2nd'):
                 self.menu = 'Main'
+                self.buttons.setKeys(self.buttons.mainkeys)
             else:
                 self.menu == '2nd'
+                self.buttons.setKeys(self.buttons.secondkeys)
 
         elif (keyPressed == "Alpha"):
             if (self.menu == 'Alpha'):
                 self.menu = 'Main'
+                self.buttons.setKeys(self.buttons.mainkeys)
             else:
                 self.menu = 'Alpha'
+                self.buttons.setKeys(self.buttons.alphakeys)
 
         elif (keyPressed == "Math"):
             if (self.menu == 'Math'):
@@ -44,58 +53,67 @@ class controller():
                 self.menu = 'Math'
 
 
-        #add cursor junk
-        elif (keyPressed == "RIGHT" and self.cursor < len(self.display)):
+        #Move the cursor and index with the left and right arrows
+        elif (keyPressed == "RIGHT" and self.index < len(self.display)):
             self.output.moveRight()
-            self.cursor += 1
-        elif (keyPressed == "LEFT" and self.cursor > 0):
+            self.index += 1
+        elif (keyPressed == "LEFT" and self.index > 0):
             self.output.moveLeft()
-            self.cursor -= 1
+            self.index -= 1
 
+        #Scroll between different options in math functions
         elif (keyPressed == "UP"):
             self.selectedline = (self.selectedline + 1) % 4
         elif (keyPressed == "DOWN"):
             self.selectedline = (self.selectedline - 1) % 4
 
 
+        #Activate if enter is pressed
         elif (keyPressed == "ENTER"):
+            #If not in a specific function, solve the written expression and display it
             if (self.func == 'None'):
                 self.display = self.util.executeStringFunction(self.executable)
                 self.executable = 0
+            #If in a specific function, confirm you finished entering parameters and execute
             else:
                 entered = True
 
+        #delete current selection
         elif (keyPressed == "DELETE"):
             if (self.func == 'None'):
-                self.executable = self.executable[:self.cursor] + self.executable[self.cursor+1:]
-                self.display = self.display[:self.cursor] + self.display[self.cursor+1:]
+                self.executable = self.executable[:self.index] + self.executable[self.index+1:]
+                self.display = self.display[:self.index] + self.display[self.index+1:]
             else:
-                input = input[:self.cursor] + input[self.cursor+1:]
+                self.display = self.display[:self.index] + self.display[self.index+1:]
 
+        #If no special key was pressed, add the key into the expression string starting at the selection
         elif (self.menu == 'Main' or self.menu == '2nd'):
-            if (self.func = 'None'):
-                self.executable = self.executable[:self.cursor] + keyPressed + self.executable[self.cursor:]
-                self.display = self.display[:self.cursor] + keyPressed + self.display[self.cursor:]
+            if (self.func == 'None'):
+                self.executable = self.executable[:self.index] + keyPressed + self.executable[self.index:]
+                self.display = self.display[:self.index] + keyPressed + self.display[self.index:]
             else:
+                #If we are operating in a function, use the dynamic variable 'x'
                 if (keyPressed == "X"):
                     keyPressed = 'x'
-                #input = input[:self.cursor] + keyPressed + input[self.cursor:]
-                self.display = self.display[:self.cursor] + keyPressed + self.display[self.cursor:]
+                self.display = self.display[:self.index] + keyPressed + self.display[self.index:]
 
+        #If the selection is off the screen, move the screens view until it aint
+        while ((self.index < self.window[0]) or (self.index > self.window[1])):
+            if (self.index < self.window[0]):
+                self.window[0] -= 1
+                self.window[1] -= 1
 
-        if (self.cursor < self.window[0]):
-            self.window[0] -= 1
-            self.window[1] -= 1
+            elif (self.index > self.window[1]):
+                self.window[0] += 1
+                self.window[1] += 1
 
-        elif (self.cursor > self.window[1]):
-            self.window[0] += 1
-            self.window[1] += 1
-
-
+        #If we are in the math menu, and have not selected a function, display the menu
         if (self.menu == 'Math' and self.func == 'None'):
+            #store current display to not lose information
             self.tempdisplay = self.display
             self.selectedline = 0
 
+            #allow scrolling to get to selected item
             if (self.selectedline == 0):
                 self.display = "1: defIntegral"
             elif (self.selectedline == 1):
@@ -105,7 +123,7 @@ class controller():
             elif (self.selectedline == 3):
                 self.display = "4: decToFrac"
 
-
+            #display the selection and request parameters
             if (keyPressed == "1"):
                 self.menu = 'Main'
                 self.func = 'defInt'
@@ -123,25 +141,23 @@ class controller():
                 self.func = 'decToFrac'
                 self.display = "decToFrac("
 
-            self.cursor = len(self.display)
-            #output.set_cursor(self.cursor,0)
-
-            # input = ""
-            # entered = 0
-            # argument = 0
-            # f = ["","",""]
+            #set index to the end of the string ready to edit
+            self.index = len(self.display)
             entered = False
 
+        #for each function, parse out the function and the enclosing brackets into different parameters
         if (self.func == 'defInt'):
             if (entered):
                 self.display.replace("defInt(",'')
                 self.display.replace(')','')
                 f = self.display.split(',')
                 f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
+
+                #Calculate value of the function and reset the ability to call a function and display value
                 value = str(self.util.defIntegrate(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
                 self.executable += value
                 self.display = self.tempdisplay + value
-                self.cursor = len(self.display)
+                self.index = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -154,7 +170,7 @@ class controller():
                 value = str(self.util.defDerivative(self.util.convertStringToFunction(f[0]),float(f[1])))
                 self.executable += value
                 self.display = self.tempdisplay + value
-                self.cursor = len(self.display)
+                self.index = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -167,7 +183,7 @@ class controller():
                 value = str(self.util.summation(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
                 self.executable += value
                 self.display = self.tempdisplay + value
-                self.cursor = len(self.display)
+                self.index = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -180,84 +196,13 @@ class controller():
                 value = self.util.decToFraction(self.util.executeStringFunction(f[0]))
                 self.executable += value
                 self.display = self.tempdisplay + value
-                self.cursor = len(self.display)
+                self.index = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
-        output.set_cursor(self.cursor,0)
-
-        """
-        if (self.func == 'defInt'):
-            if (arguments == 0):
-                self.display = "Function: " + input
-            elif (arguments == 1):
-                self.display = "Lower Bound: " + input
-            elif (arguments == 2):
-                self.display = "Upper Bound: " + input
-
-            if (entered > arguments and entered < 4):
-                f[arguments] = input
-                input = ""
-                arguments += 1
-            elif (entered > 3):
-                value = str(self.util.defIntegrate(self.util.convertStringToFunction(f[0][1:]),float(f[1]),float(f[2])))
-                self.executable += value
-                self.display = self.tempdisplay + value
-                self.func = 0
-                self.selectedline = 0
-
-        elif (self.func == 'defDer'):
-            if (arguments == 0):
-                self.display = "Function: " + input
-            elif (arguments == 1):
-                self.display = "Evaluate at: " + input
-
-            if (entered > arguments and entered < 3):
-                f[arguments] = input
-                input = ""
-                arguments += 1
-            elif (entered > 2):
-                value = str(self.util.defDerivative(self.util.convertStringToFunction(f[0][1:]),float(f[1])))
-                self.executable += value
-                self.display = self.tempdisplay + value
-                self.func = 0
-                self.selectedline = 0
-
-        elif (self.func == 'Sum'):
-            if (arguments == 0):
-                self.display = "Function: " + input
-            elif (arguments == 1):
-                self.display = "Lower Bound: " + input
-            elif (arguments == 2):
-                self.display = "Upper Bound: " + input
-
-            if (entered > arguments and entered < 4):
-                f[arguments] = input
-                input = ""
-                arguments += 1
-            elif (entered > 3):
-                value = str(self.util.summation(self.util.convertStringToFunction(f[0][1:]),float(f[1]),float(f[2])))
-                self.executable += value
-                self.display = self.tempdisplay + value
-                self.func = 0
-                self.selectedline = 0
-
-        elif (self.func == 'decToFrac'):
-            if (arguments == 0):
-                self.display = "Decimal: " + input
-
-            if (entered > arguments and entered < 2):
-                f[arguments] = input
-                input = ""
-                arguments += 1
-            elif (entered > 3):
-                value = self.util.decToFraction(self.util.executeStringFunction(f[0][1:]))
-                self.display = value
-                self.func = 0
-                self.selectedline = 0
-            """
-
-
+        #set blinking cursor location in relation to the window
+        cursor = self.index-self.window[0]
+        output.set_cursor(cursor,0)
 
 
 controller = controller()

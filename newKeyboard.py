@@ -56,6 +56,30 @@ class buttons():
 
         self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
 
+        self.mainkeys = [
+                ['2nd','X','Math','LEFT','UP'],
+                ['Alpha','(' ,')','DOWN','UP'],
+                ['^','sin(','cos(','tan(','/'],
+                ['LOG(', '7',  '8', '9',  '*'],
+                ['LN(', '4' ,' 5',  '6' , '-'],
+                ['=',  '1',  '2',  '3',   '+'],
+                ['DELETE','.','0',' ','ENTER']]
+        self.secondkeys = [
+                ['2nd','X','Math','LEFT','UP'],
+                ['Alpha','(' ,')','DOWN','UP'],
+                ['pi','asin(','acos(','atan(','/'],
+                ['10^(', '7',  '8', '9',  '*'],
+                ['e^(', '4' ,' 5',  '6' , '-'],
+                ['=',  '1',  '2',  '3',   '+'],
+                ['DELETE','.','0',' ','ENTER']]
+        self.alphakeys = [
+                ['2nd','X','Math','LEFT','UP'],
+                ['Alpha','(' ,')','DOWN','UP'],
+                ['A',  'B',  'C',  'D'  , '/'],
+                ['E',  'F',  'G',  'H'  , '*'],
+                ['I',  'J',  'K',  'L'  , '-'],
+                ['=',  'M',  'N',  'O'  , '+'],
+                ['DELETE','P','Q',' ','ENTER']]
     def setHandler(self, function):
         self.keypad.registerKeyPressHandler(function)
 
