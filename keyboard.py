@@ -44,4 +44,4 @@ class keyboard():
         r = self.readRow()
         return [r,c]
 
-keyboard.readButton
+print(keyboard.readButton())
