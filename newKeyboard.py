@@ -48,7 +48,7 @@ class buttons():
                 ['LOG(', '7',  '8', '9',  '*'],
                 ['LN(', '4' ,' 5',  '6' , '-'],
                 ['=',  '1',  '2',  '3',   '+'],
-                ['SQRT(','.','0',' ', 'ENTER']
+                ['DELETE','.','0',' ','ENTER']]
         self.ROW_PINS = [4,17,27,22,5,6,13] # BCM numbering
         self.COL_PINS = [18,23,24,25,12] # BCM numbering
 

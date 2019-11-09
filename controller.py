@@ -123,6 +123,9 @@ class controller():
                 self.func = 'decToFrac'
                 self.display = "decToFrac("
 
+            self.cursor = len(self.display)
+            #output.set_cursor(self.cursor,0)
+
             # input = ""
             # entered = 0
             # argument = 0
@@ -138,6 +141,7 @@ class controller():
                 value = str(self.util.defIntegrate(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
                 self.executable += value
                 self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -150,6 +154,7 @@ class controller():
                 value = str(self.util.defDerivative(self.util.convertStringToFunction(f[0]),float(f[1])))
                 self.executable += value
                 self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -162,6 +167,7 @@ class controller():
                 value = str(self.util.summation(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
                 self.executable += value
                 self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
                 self.func = 0
                 self.selectedline = 0
 
@@ -174,8 +180,11 @@ class controller():
                 value = self.util.decToFraction(self.util.executeStringFunction(f[0]))
                 self.executable += value
                 self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
                 self.func = 0
                 self.selectedline = 0
+
+        output.set_cursor(self.cursor,0)
 
         """
         if (self.func == 'defInt'):
