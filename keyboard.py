@@ -1,25 +1,22 @@
 import RPi.GPIO as GPIO
 import time
 
-row = [17,27,22]
-col = [2,3,4]
-
 
 class keyboard():
     def __init__(self):
         self.row = [17,27,22]
         self.col = [33,35,37]
     def rowOut(self):
-        for id in row:
+        for id in self.row:
             GPIO.setup(id, GPIO.OUT)
             GPIO.output(id, True)
-        for id in col:
+        for id in self.col:
             GPIO.setup(id, GPIO.IN)
     def colOut(self):
-        for id in col:
+        for id in self.col:
             GPIO.setup(id, GPIO.OUT)
             GPIO.output(id, True)
-        for id in row:
+        for id in self.row:
             GPIO.setup(id, GPIO.IN)
     def readRow(self):
         rowin = []
@@ -34,7 +31,7 @@ class keyboard():
         colin = []
         for index, id in enumerate(self.col):
             if GPIO.input(id):
-                rowin.append(index)
+                colin.append(index)
         if len(colin) > 1:
             return "fuck off"
         else: 
