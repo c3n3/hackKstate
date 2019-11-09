@@ -11,16 +11,16 @@ class keyboard():
         self.col = [2,3,4]
     def rowOut(self):
         for id in row:
-            GPIO.setup(id, GPIO.OUT, pull_up_down = GPIO.PUD_DOWN)
+            GPIO.setup(id, GPIO.OUT)
             GPIO.output(id, True)
         for id in col:
-            GPIO.setup(id, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+            GPIO.setup(id, GPIO.IN)
     def colOut(self):
         for id in col:
-            GPIO.setup(id, GPIO.OUT, pull_up_down = GPIO.PUD_DOWN)
+            GPIO.setup(id, GPIO.OUT)
             GPIO.output(id, True)
         for id in row:
-            GPIO.setup(id, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+            GPIO.setup(id, GPIO.IN)
     def readRow(self):
         rowin = []
         for index, id in enumerate(self.row):
