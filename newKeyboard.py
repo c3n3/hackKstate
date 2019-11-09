@@ -92,6 +92,7 @@ class buttons():
 Lcd = output()
 things = buttons()
 def out(thing):
+    print(thing)
     Lcd.showMessage(thing)
 
 things.setHandler(out)
