@@ -48,7 +48,8 @@ class buttons():
                 ['LOG(','7','8','9','*'],
                 ['LN(','4','5','6','-'],
                 ['=','1','2','3','+'],
-                ['SQRT(','.','0',' ','ENTER']
+                ['SQRT(','.','0',' ','ENTER'],
+        ]
         self.ROW_PINS = [4,17,27,22,5,6,13] # BCM numbering
         self.COL_PINS = [18,23,24,25,12] # BCM numbering
 
@@ -62,3 +63,12 @@ class buttons():
     def setKeys(self, newKeys):
         self.keys = newKeys
         self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
+
+things = buttons()
+def out(thing):
+    print(thing)
+
+things.setHandler(out)
+
+while True:
+    time.sleep(.1)
