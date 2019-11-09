@@ -38,6 +38,7 @@
 
 from pad4pi import rpi_gpio
 import time
+import output.py
 
 class buttons():
     def __init__(self):
@@ -45,12 +46,13 @@ class buttons():
                 ['2nd','X','Math','LEFT','UP'],
                 ['Alpha','(' ,')','DOWN','UP'],
                 ['^','sin(','cos(','tan(','/'],
-                ['LOG(', '7',  '8', '9',  '*'],
-                ['LN(', '4' ,' 5',  '6' , '-'],
-                ['=',  '1',  '2',  '3',   '+'],
-                ['DELETE','.','0',' ','ENTER']]
-        self.ROW_PINS = [4,17,27,22,5,6,13] # BCM numbering
-        self.COL_PINS = [18,23,24,25,12] # BCM numbering
+                ['LOG(','7','8','9','*'],
+                ['LN(','4','5','6','-'],
+                ['=','1','2','3','+'],
+                ['DELETE','.','0',' ','ENTER'],
+        ]
+        self.ROW_PINS = [4,17,10,22,5,9,13] # BCM numbering
+        self.COL_PINS = [18,11,24,16,12] # BCM numbering
 
         self.factory = rpi_gpio.KeypadFactory()
 
@@ -87,9 +89,10 @@ class buttons():
         self.keys = newKeys
         self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
 
+Lcd = output()
 things = buttons()
 def out(thing):
-    print(thing)
+    Lcd.showMessage(thing)
 
 things.setHandler(out)
 
