@@ -51,8 +51,8 @@ class buttons():
                 ['=','1','2','3','+'],
                 ['DELETE','.','0',' ','ENTER'],
         ]
-        self.ROW_PINS = [4,17,10,22,5,9,13] # BCM numbering
-        self.COL_PINS = [18,11,24,16,12] # BCM numbering
+        self.ROW_PINS = [4,17,10,5,6,9,13] # BCM numbering
+        self.COL_PINS = [18,11,23,16,12] # BCM numbering
 
         self.factory = rpi_gpio.KeypadFactory()
 
