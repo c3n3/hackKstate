@@ -8,7 +8,7 @@ col = [2,3,4]
 class keyboard():
     def __init__(self):
         self.row = [17,27,22]
-        self.col = [2,3,4]
+        self.col = [33,35,37]
     def rowOut(self):
         for id in row:
             GPIO.setup(id, GPIO.OUT)
