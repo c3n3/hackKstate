@@ -9,7 +9,6 @@ class keyboard():
     def __init__(self):
         self.row = [17,27,22]
         self.col = [33,35,37]
-        GPIO.setmode(GPIO.BCM)
     def rowOut(self):
         for id in row:
             GPIO.setup(id, GPIO.OUT)
@@ -41,6 +40,7 @@ class keyboard():
         else: 
             return colin[0]
     def readButton(self):
+        GPIO.setmode(GPIO.BCM)
         self.rowOut()
         c = self.readCol()
         self.colOut()
