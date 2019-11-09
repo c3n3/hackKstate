@@ -72,4 +72,5 @@ y = scaled_height // 2 - height // 2
 image = image.crop((x, y, x + width, y + height))
 
 # Display image.
-disp.image(image)
+while True:
+    disp.image(image)
