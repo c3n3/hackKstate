@@ -9,6 +9,7 @@ class keyboard():
     def __init__(self):
         self.row = [17,27,22]
         self.col = [33,35,37]
+        GPIO.setmode(GPIO.BCM)
     def rowOut(self):
         for id in row:
             GPIO.setup(id, GPIO.OUT)
@@ -28,7 +29,7 @@ class keyboard():
                 rowin.append(index)
         if len(rowin) > 1:
             return "fuck off"
-        else: 
+        else:
             return rowin[0]
     def readCol(self):
         colin = []
