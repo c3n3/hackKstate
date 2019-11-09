@@ -1,5 +1,6 @@
 from utility import utility
 from newKeyboard import buttons
+from output import output
 
 
 class controller():
@@ -12,14 +13,16 @@ class controller():
         self.menu = 'Main'      #Main,2nd,Alpha,Math
         self.func = 'None'      #None,defInt,defDer,Sum,decToFrac
         self.selectedline = 0
-        self.cursor = 0 #index of window
+        self.cursor = 0 #index of cursor
+        self.window = [0,15]
 
-        self.util = utility
+        self.util = utility()
         self.buttons = buttons()
         self.buttons.setHandler(self.processButtonPress())
+        self.output = output()
 
 
-    def processButtonPress(self):
+    def processButtonPress(self, keyPressed):
 
 
         if (keyPressed == "2nd"):
@@ -42,10 +45,12 @@ class controller():
 
 
         #add cursor junk
-        elif (keyPressed == "RIGHT"):
-            pass
-        elif (keyPressed == "LEFT"):
-            pass
+        elif (keyPressed == "RIGHT" and self.cursor < len(self.display)):
+            self.output.moveRight()
+            self.cursor += 1
+        elif (keyPressed == "LEFT" and self.cursor > 0):
+            self.output.moveLeft()
+            self.cursor -= 1
 
         elif (keyPressed == "UP"):
             self.selectedline = (self.selectedline + 1) % 4
@@ -56,19 +61,40 @@ class controller():
         elif (keyPressed == "ENTER"):
             if (self.func == 'None'):
                 self.display = self.util.executeStringFunction(self.executable)
+                self.executable = 0
             else:
-                entered += 1
+                entered = True
 
+        elif (keyPressed == "DELETE"):
+            if (self.func == 'None'):
+                self.executable = self.executable[:self.cursor] + self.executable[self.cursor+1:]
+                self.display = self.display[:self.cursor] + self.display[self.cursor+1:]
+            else:
+                input = input[:self.cursor] + input[self.cursor+1:]
 
         elif (self.menu == 'Main' or self.menu == '2nd'):
             if (self.func = 'None'):
-                self.executable += keyPressed
-                self.display += keyPressed
+                self.executable = self.executable[:self.cursor] + keyPressed + self.executable[self.cursor:]
+                self.display = self.display[:self.cursor] + keyPressed + self.display[self.cursor:]
             else:
-                input += keyPressed
+                if (keyPressed == "X"):
+                    keyPressed = 'x'
+                #input = input[:self.cursor] + keyPressed + input[self.cursor:]
+                self.display = self.display[:self.cursor] + keyPressed + self.display[self.cursor:]
+
+
+        if (self.cursor < self.window[0]):
+            self.window[0] -= 1
+            self.window[1] -= 1
+
+        elif (self.cursor > self.window[1]):
+            self.window[0] += 1
+            self.window[1] += 1
+
 
         if (self.menu == 'Math' and self.func == 'None'):
             self.tempdisplay = self.display
+            self.selectedline = 0
 
             if (self.selectedline == 0):
                 self.display = "1: defIntegral"
@@ -83,21 +109,84 @@ class controller():
             if (keyPressed == "1"):
                 self.menu = 'Main'
                 self.func = 'defInt'
+                self.display = "defInt("
             elif (keyPressed == "2"):
                 self.menu = 'Main'
                 self.func = 'defDer'
+                self.display = "defDer("
             elif (keyPressed == "3"):
                 self.menu = 'Main'
                 self.func = 'Sum'
+                self.display = "Sum("
             elif (keyPressed == "4"):
                 self.menu = 'Main'
                 self.func = 'decToFrac'
+                self.display = "decToFrac("
 
-            input = ""
-            entered = 0
-            argument = 0
-            f = ["","",""]
+            self.cursor = len(self.display)
+            #output.set_cursor(self.cursor,0)
 
+            # input = ""
+            # entered = 0
+            # argument = 0
+            # f = ["","",""]
+            entered = False
+
+        if (self.func == 'defInt'):
+            if (entered):
+                self.display.replace("defInt(",'')
+                self.display.replace(')','')
+                f = self.display.split(',')
+                f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
+                value = str(self.util.defIntegrate(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
+                self.executable += value
+                self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
+                self.func = 0
+                self.selectedline = 0
+
+        elif (self.func == 'defDer'):
+            if (entered):
+                self.display.replace("defDer(",'')
+                self.display.replace(')','')
+                f = self.display.split(',')
+                f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
+                value = str(self.util.defDerivative(self.util.convertStringToFunction(f[0]),float(f[1])))
+                self.executable += value
+                self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
+                self.func = 0
+                self.selectedline = 0
+
+        elif (self.func == 'Sum'):
+            if (entered):
+                self.display.replace("Sum(",'')
+                self.display.replace(')','')
+                f = self.display.split(',')
+                f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
+                value = str(self.util.summation(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
+                self.executable += value
+                self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
+                self.func = 0
+                self.selectedline = 0
+
+        elif (self.func == 'decToFrac'):
+            if (entered):
+                self.display.replace("decToFrac(",'')
+                self.display.replace(')','')
+                f = self.display.split(',')
+                f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
+                value = self.util.decToFraction(self.util.executeStringFunction(f[0]))
+                self.executable += value
+                self.display = self.tempdisplay + value
+                self.cursor = len(self.display)
+                self.func = 0
+                self.selectedline = 0
+
+        output.set_cursor(self.cursor,0)
+
+        """
         if (self.func == 'defInt'):
             if (arguments == 0):
                 self.display = "Function: " + input
@@ -166,7 +255,7 @@ class controller():
                 self.display = value
                 self.func = 0
                 self.selectedline = 0
-
+            """
 
 
 

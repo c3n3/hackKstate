@@ -17,10 +17,10 @@ class output():
 
     def showAnswer(self, string):
         self.lcd.set_cursor(16 - len(string), 1)
-        self.lcd.message(string)
+        self.lcd.message = string
 
     def showMessage(self, string):
-        self.lcd(string)
+        self.lcd.message = string
 
     # def addChar(self):
     #     self.lcd.message()
@@ -31,12 +31,11 @@ class output():
     def moveRight(self):
         self.lcd.move_right()
 
+    def set_cursor(self, x, y):
+        self.lcd.set_cursor(x, y)
+
     def clear(self):
         self.lcd.clear()
 
     def resetCursor(self):
         self.lcd.home()
-
-o = output()
-
-o.message("Hello people")

@@ -43,8 +43,8 @@ import output.py
 class buttons():
     def __init__(self):
         self.keys = [
-                ['2nd','X','MATH','LEFT','UP'],
-                ['Alpha','(',')','DOWN','UP'],
+                ['2nd','X','Math','LEFT','UP'],
+                ['Alpha','(' ,')','DOWN','UP'],
                 ['^','sin(','cos(','tan(','/'],
                 ['LOG(','7','8','9','*'],
                 ['LN(','4','5','6','-'],

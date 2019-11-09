@@ -82,10 +82,11 @@ class utility():
         strfunction = strfunction.replace(' ','')
 
         #check if its an assignment instead of an expression
-        if (strfunction[1] == "="):
-            assignment = True
-            var = strfunction[0].upper()
-            strfunction = strfunction[2:]   #remove the assignment for parsing
+        if (strfunction != ""):
+            if (strfunction[1] == "="):
+                assignment = True
+                var = strfunction[0].upper()
+                strfunction = strfunction[2:]   #remove the assignment for parsing
 
         #replace pretty things with functional things
         strfunction = strfunction.replace('^',"**")
@@ -193,14 +194,16 @@ class utility():
 
     def executeStringFunction(self,strfunction):
         fun = self.convertStringToFunction(strfunction)
-        #print(fun(0))
-        return fun(0)
+        if (fun != None):
+            return fun(0)
+        else:
+            return strfunction
 
 util = utility()
 util.setRadiansMode(True)
-func = util.convertStringToFunction("55-x^2^2 /10!")
+func = util.convertStringToFunction("")
 
-util.executeStringFunction("55-12")
+#print(util.executeStringFunction("A=2"))
 
 #util.convertStringToFunction("a=15")
 #print(A)
