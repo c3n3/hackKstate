@@ -28,7 +28,8 @@ class keyboard():
                 rowin.append(index)
         if len(rowin) > 1:
             return "fuck off"
-        else return rowin[0]
+        else: 
+            return rowin[0]
     def readCol(self):
         colin = []
         for index, id in enumerate(self.col):
