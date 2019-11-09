@@ -62,3 +62,12 @@ class buttons():
     def setKeys(self, newKeys):
         self.keys = newKeys
         self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
+
+things = buttons()
+def out(thing):
+    print(thing)
+
+things.setHandler(out)
+
+while True:
+    time.sleep(.1)
