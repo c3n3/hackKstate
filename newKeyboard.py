@@ -38,26 +38,24 @@
 
 from pad4pi import rpi_gpio
 import time
-KEYPAD = [
-        [1,2,3],
-        [4,5,6],
-        [7,8,9],
-]
 
-ROW_PINS = [17,27,22] # BCM numbering
-COL_PINS = [13,19,26] # BCM numbering
+class buttons():
+    def __init__(self):
+        self.keys = [
+                [1,2,3],
+                [4,5,6],
+                [7,8,9],
+        ]
+        self.ROW_PINS = [17,27,22] # BCM numbering
+        self.COL_PINS = [13,19,26] # BCM numbering
 
-factory = rpi_gpio.KeypadFactory()
+        self.factory = rpi_gpio.KeypadFactory()
 
-# Try factory.create_4_by_3_keypad
-# and factory.create_4_by_4_keypad for reasonable defaults
-keypad = factory.create_keypad(keypad=KEYPAD, row_pins=ROW_PINS, col_pins=COL_PINS)
+        self.keypad = self.factory.create_keypad(keypad=keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
 
-def printKey(key):
-        print(key)
+    def setHandler(self, function):
+        keypad.registerKeyPressHandler(function)
 
-# printKey will be called each time a keypad button is pressed
-keypad.registerKeyPressHandler(printKey)
-
-while (True):
-    time.sleep(0.1)
+    def setKeys(self, newKeys):
+        self.keys = newKeys
+        self.keypad = self.factory.create_keypad(keypad=keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
