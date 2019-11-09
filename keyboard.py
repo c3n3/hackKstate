@@ -27,6 +27,8 @@ class keyboard():
                 rowin.append(index)
         if len(rowin) > 1:
             return "fuck off"
+        if len(rowin) < 1:
+            return "cunt"
         else:
             return rowin[0]
     def readCol(self):
@@ -38,6 +40,8 @@ class keyboard():
                 colin.append(index)
         if len(colin) > 1:
             return "fuck off"
+        if len(colin) < 1:
+            return "cunt"
         else: 
             return colin[0]
     def readButton(self):
