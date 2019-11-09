@@ -25,6 +25,6 @@ class testKeyBoard():
         if (key != keypad.NULL):
             print(key)
 
-k = testKeyBoard():
+k = testKeyBoard()
 while (True):
     k.read()
