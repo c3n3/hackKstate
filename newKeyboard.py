@@ -42,20 +42,23 @@ import time
 class buttons():
     def __init__(self):
         self.keys = [
-                [1,2,3],
-                [4,5,6],
-                [7,8,9],
-        ]
-        self.ROW_PINS = [17,27,22] # BCM numbering
-        self.COL_PINS = [13,19,26] # BCM numbering
+                ['2nd','X','MATH','LEFT','UP'],
+                ['Alpha','(',')','DOWN','UP'],
+                ['^','sin(','cos(','tan(','/'],
+                ['LOG(','7','8','9','*'],
+                ['LN(','4','5','6','-'],
+                ['=','1','2','3','+'],
+                ['SQRT(','.','0',' ','ENTER']
+        self.ROW_PINS = [4,17,27,22,5,6,13] # BCM numbering
+        self.COL_PINS = [18,23,24,25,12] # BCM numbering
 
         self.factory = rpi_gpio.KeypadFactory()
 
-        self.keypad = self.factory.create_keypad(keypad=keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
+        self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
 
     def setHandler(self, function):
-        keypad.registerKeyPressHandler(function)
+        self.keypad.registerKeyPressHandler(function)
 
     def setKeys(self, newKeys):
         self.keys = newKeys
-        self.keypad = self.factory.create_keypad(keypad=keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
+        self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
