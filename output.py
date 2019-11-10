@@ -15,7 +15,7 @@ class output():
         self.lcd_columns = 16
         self.lcd_rows = 2
         self.lcd = characterlcd.Character_LCD_Mono(self.lcd_rs, self.lcd_en, self.lcd_d4, self.lcd_d5, self.lcd_d6, self.lcd_d7, self.lcd_columns, self.lcd_rows)
-        self.lcd.message = "Hello"
+        #self.lcd.message = "Hello"
     def showAnswer(self, string):
         self.lcd.cursor_position(16 - len(string), 1)
         self.lcd.message = string
