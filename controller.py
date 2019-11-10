@@ -204,8 +204,8 @@ class controller():
                 self.selectedline = 0
 
         #set blinking cursor location in relation to the window
-        cursor = self.index-self.window[0]
-        self.output.set_cursor(cursor,0)
+        #cursor = self.index-self.window[0]
+        #self.output.set_cursor(cursor,0)
 
         self.output.showMessage(self.display)
         print(self.display)
