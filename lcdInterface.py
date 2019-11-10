@@ -52,7 +52,7 @@ class lcdInterface():
 
     def setFirstLine(self, string):
         self.lines[0] = string
-        _update()
+        self._update()
 
     def _update(self):
         draw = ImageDraw.Draw(self.image)
