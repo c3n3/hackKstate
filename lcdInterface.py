@@ -27,6 +27,7 @@ class lcdInterface():
         self.font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
         # Get drawing object to draw on image.
         self.lines.append("8 + 9 * 7")
+        self._update()
 
     def graph3D(self, function):
         for x in range(0, self.width):

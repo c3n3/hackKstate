@@ -91,6 +91,7 @@ class buttons():
 
 Lcd = lcdInterface()
 things = buttons()
+Lcd.setFirstLine("Hello this is cool")
 def out(thing):
     print(thing)
     Lcd.setFirstLine(thing)
