@@ -18,7 +18,7 @@ class lcdInterface():
         # Setup SPI bus using hardware SPI:
         spi = board.SPI()
 
-        self.disp = ili9341.ILI9341(spi, rotation=90, cs=cs_pin, dc=dc_pin, rst=reset_pin, baudrate=BAUDRATE)
+        self.disp = ili9341.ILI9341(spi, rotation=90, cs=cs_pin, dc=dc_pin, rst=reset_pin, baudrate=70000000)
 
         self.lines = []
         self.width = 320
@@ -28,7 +28,7 @@ class lcdInterface():
         # Get drawing object to draw on image.
         self.lines.append("8 + 9 * 7")
         self._update()
-
+    
     def graph3D(self, function):
         for x in range(0, self.width):
             for y in range(0, self.height):
@@ -56,13 +56,13 @@ class lcdInterface():
 
     def _update(self):
         draw = ImageDraw.Draw(self.image)
-
+            
         draw.rectangle((0, 0, self.width, self.heigth), fill=(0, 0, 0))
         for x in range(1, len(self.lines) + 1):
-            print("something")
             draw.text((4, (244 - (x*9 + x*30))), self.lines[x - 1],font=self.font, fill=(255, 255, 0, 255))
             #draw.text((width//2 - font_width//2, height//2 - font_height//2),
             #text, font=font, fill=(255, 255, 0))
+        print("the function has been called")
         self.disp.image(self.image)
     def clear(self):
         self.lines = []
@@ -88,3 +88,7 @@ class lcdInterface():
         draw.text((10,10), self.lines[x - 1],font=self.font, fill=(255, 255, 0, 255))
         draw.rectangle((0, 0, self.width, self.heigth), fill=(0, 0, 0))
         self.disp.image(self.image)
+        
+    def toString(self):
+        for x in self.lines:
+            print(x)
