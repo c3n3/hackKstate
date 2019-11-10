@@ -22,7 +22,7 @@ class controller():
         #create objects for useful functions
         self.util = utility()                                   #For calculations and parsing
         self.buttons = buttons()                                #To read from buttons
-        self.buttons.setHandler(self.processButtonPress())
+        self.buttons.setHandler(self.processButtonPress)
         self.output = output()                                  #To print to screen
 
 
