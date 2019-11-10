@@ -60,7 +60,7 @@ class buttons():
 
         self.mainkeys = [
                 ['2nd','X','Math','LEFT','UP'],
-                ['Alpha','(' ,')','DOWN','UP'],
+                ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['^','sin(','cos(','tan(','/'],
                 ['LOG(', '7',  '8', '9',  '*'],
                 ['LN(', '4' ,' 5',  '6' , '-'],
