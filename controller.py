@@ -73,8 +73,10 @@ class controller():
         elif (keyPressed == "ENTER"):
             #If not in a specific function, solve the written expression and display it
             if (self.func == 'None'):
-                self.display = self.util.executeStringFunction(self.executable)
+                self.display = str(self.util.executeStringFunction(self.executable))
                 self.executable = ""
+                if (self.display == '0'):
+                    self.display = ""
             #If in a specific function, confirm you finished entering parameters and execute
             else:
                 entered = True
@@ -204,10 +206,10 @@ class controller():
                 self.selectedline = 0
 
         #set blinking cursor location in relation to the window
-        cursor = self.index-self.window[0]
-        self.output.set_cursor(cursor,0)
+        #cursor = self.index-self.window[0]
+        #self.output.set_cursor(cursor,0)
 
-        self.output.showMessage(self.display)
+        #self.output.showMessage(self.display)
         print(self.display)
 
 
