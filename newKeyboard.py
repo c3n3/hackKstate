@@ -38,7 +38,7 @@
 
 from pad4pi import rpi_gpio
 import time
-import output.py
+from output import output
 
 class buttons():
     def __init__(self):
@@ -51,8 +51,8 @@ class buttons():
                 ['=','1','2','3','+'],
                 ['DELETE','.','0',' ','ENTER'],
         ]
-        self.ROW_PINS = [4,17,10,22,5,9,13] # BCM numbering
-        self.COL_PINS = [18,11,24,16,12] # BCM numbering
+        self.ROW_PINS = [4,17,10,5,6,9,13] # BCM numbering
+        self.COL_PINS = [18,11,23,16,12] # BCM numbering
 
         self.factory = rpi_gpio.KeypadFactory()
 
@@ -60,7 +60,7 @@ class buttons():
 
         self.mainkeys = [
                 ['2nd','X','Math','LEFT','UP'],
-                ['Alpha','(' ,')','DOWN','UP'],
+                ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['^','sin(','cos(','tan(','/'],
                 ['LOG(', '7',  '8', '9',  '*'],
                 ['LN(', '4' ,' 5',  '6' , '-'],
@@ -92,6 +92,7 @@ class buttons():
 Lcd = output()
 things = buttons()
 def out(thing):
+    print(thing)
     Lcd.showMessage(thing)
 
 things.setHandler(out)
