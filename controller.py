@@ -1,6 +1,7 @@
 from utility import utility
 from newKeyboard import buttons
 from output import output
+from time import sleep
 
 
 class controller():
