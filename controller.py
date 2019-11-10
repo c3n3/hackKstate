@@ -2,7 +2,7 @@ from utility import utility
 from newKeyboard import buttons
 from output import output
 from time import sleep
-
+from lcdInterface import lcdInterface
 
 class controller():
 
@@ -11,20 +11,21 @@ class controller():
         self.executable = ""
         self.display = ""
         self.tempdisplay = ""
+        self.print = ""
 
         self.menu = 'Main'      #Main,2nd,Alpha,Math
-        self.func = 'None'      #None,defInt,defDer,Sum,decToFrac
+        self.func = 'None'      #None,defInt,defDer,Sum,decToFrac,Graph
 
 
-        self.selectedline = 0   #To scroll through different functions
+        #self.selectedline = 0   #To scroll through different functions
         self.index = 0 #index of selection
-        self.window = [0,15]
+        self.window = [0,22]
 
         #create objects for useful functions
         self.util = utility()                                   #For calculations and parsing
         self.buttons = buttons()                                #To read from buttons
         self.buttons.setHandler(self.processButtonPress)
-        self.output = output()                                  #To print to screen
+        self.lcd = lcdInterface()                                  #To print to screen
 
 
     #Activates whenever a button is pressed with key as parameter
@@ -56,24 +57,23 @@ class controller():
 
         #Move the cursor and index with the left and right arrows
         elif (keyPressed == "RIGHT" and self.index < len(self.display)):
-            self.output.moveRight()
             self.index += 1
         elif (keyPressed == "LEFT" and self.index > 0):
-            self.output.moveLeft()
             self.index -= 1
 
         #Scroll between different options in math functions
         elif (keyPressed == "UP"):
-            self.selectedline = (self.selectedline + 1) % 4
+            pass
         elif (keyPressed == "DOWN"):
-            self.selectedline = (self.selectedline - 1) % 4
+            pass
 
 
         #Activate if enter is pressed
         elif (keyPressed == "ENTER"):
             #If not in a specific function, solve the written expression and display it
             if (self.func == 'None'):
-                self.display = str(self.util.executeStringFunction(self.executable))
+                self.lcd.executed(str(self.util.executeStringFunction(self.executable)))
+                self.display = ""
                 self.executable = ""
                 if (self.display == '0'):
                     self.display = ""
@@ -114,6 +114,7 @@ class controller():
 
         #If we are in the math menu, and have not selected a function, display the menu
         if (self.menu == 'Math' and self.func == 'None'):
+            """
             #store current display to not lose information
             self.tempdisplay = self.display
             self.selectedline = 0
@@ -127,24 +128,41 @@ class controller():
                 self.display = "3: Summation"
             elif (self.selectedline == 3):
                 self.display = "4: decToFrac"
+            """
+            self.lcd.Clear()
+            self.lcd.Text("1: defIntegral\n2: defDerivative\n3: summation\n4: decToFrac\n5: graphFunc")
 
             #display the selection and request parameters
             if (keyPressed == "1"):
                 self.menu = 'Main'
                 self.func = 'defInt'
+                self.lcd.Clear()
+                lcd.Text("defInt(f,a,b)")
                 self.display = "defInt("
             elif (keyPressed == "2"):
                 self.menu = 'Main'
                 self.func = 'defDer'
+                self.lcd.Clear()
+                lcd.Text("defDer(f,a)")
                 self.display = "defDer("
             elif (keyPressed == "3"):
                 self.menu = 'Main'
                 self.func = 'Sum'
+                self.lcd.Clear()
+                lcd.Text("Sum(f,a,b)")
                 self.display = "Sum("
             elif (keyPressed == "4"):
                 self.menu = 'Main'
                 self.func = 'decToFrac'
+                self.lcd.Clear()
+                lcd.Text("decToFrac(a)")
                 self.display = "decToFrac("
+            elif (keyPressed == "5"):
+                self.menu = 'Main'
+                self.func = 'graph'
+                self.lcd.Clear()
+                lcd.Text("graph(f)")
+                self.display = "graph("
 
             #set index to the end of the string ready to edit
             self.index = len(self.display)
@@ -153,8 +171,7 @@ class controller():
         #for each function, parse out the function and the enclosing brackets into different parameters
         if (self.func == 'defInt'):
             if (entered):
-                self.display.replace("defInt(",'')
-                self.display.replace(')','')
+                self.display = self.display.replace("defInt(",'')
                 f = self.display.split(',')
                 f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
 
@@ -163,46 +180,54 @@ class controller():
                 self.executable += value
                 self.display = self.tempdisplay + value
                 self.index = len(self.display)
-                self.func = 0
+                self.func = ""
                 self.selectedline = 0
 
         elif (self.func == 'defDer'):
             if (entered):
-                self.display.replace("defDer(",'')
-                self.display.replace(')','')
+                self.display = self.display.replace("defDer(",'')
                 f = self.display.split(',')
                 f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
                 value = str(self.util.defDerivative(self.util.convertStringToFunction(f[0]),float(f[1])))
                 self.executable += value
                 self.display = self.tempdisplay + value
                 self.index = len(self.display)
-                self.func = 0
+                self.func = ""
                 self.selectedline = 0
 
         elif (self.func == 'Sum'):
             if (entered):
-                self.display.replace("Sum(",'')
-                self.display.replace(')','')
+                self.display = self.display.replace("Sum(",'')
                 f = self.display.split(',')
                 f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
                 value = str(self.util.summation(self.util.convertStringToFunction(f[0]),float(f[1]),float(f[2])))
                 self.executable += value
                 self.display = self.tempdisplay + value
                 self.index = len(self.display)
-                self.func = 0
+                self.func = ""
                 self.selectedline = 0
 
         elif (self.func == 'decToFrac'):
             if (entered):
-                self.display.replace("decToFrac(",'')
-                self.display.replace(')','')
+                self.display = self.display.replace("decToFrac(",'')
                 f = self.display.split(',')
                 f[len(f)-1] = f[len(f)-1][:(len(f[len(f)-1])-1)]
                 value = self.util.decToFraction(self.util.executeStringFunction(f[0]))
                 self.executable += value
                 self.display = self.tempdisplay + value
                 self.index = len(self.display)
-                self.func = 0
+                self.func = ""
+                self.selectedline = 0
+
+        elif (self.func == 'graph'):
+            if (entered):
+                self.display = self.display.replace("graph(",'')
+                self.display = self.display[:len(self.display)-1]
+
+                lcd.Graph1d(self.util.convertStringToFunction(self.display))
+                self.display = ""
+                self.index = len(self.display)
+                self.func = ""
                 self.selectedline = 0
 
         #set blinking cursor location in relation to the window
@@ -210,9 +235,23 @@ class controller():
         #self.output.set_cursor(cursor,0)
 
         #self.output.showMessage(self.display)
+        #self.print = self.display[:self.index] + "|" self.display[self.index:]
+        #self.lcd.SetFirstLine(self.display[self.window[0],self.window[1]])
+        #print(self.display)
+
+    def updateDisplay(self):
+        if (i==0):
+            self.print = self.display[:self.index] + "|" self.display[self.index:]
+        elif (i==1):
+            self.print = self.display[:self.index] + "," self.display[self.index:]
+
+        self.lcd.SetFirstLine(self.print[self.window[0],self.window[1]])
         print(self.display)
 
 
 controller = controller()
+i=0
 while(True):
     sleep(.1)
+    controller.updateDisplay()
+    i = (i + 1) % 2
