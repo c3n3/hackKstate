@@ -133,7 +133,7 @@ class utility():
             #create executable string
             strlambda = "func = lambda x: " + strfunction + "+0*x"
 
-            print(strlambda)
+            #print(strlambda)
             #execute string and make func accessible again
             exec(strlambda, globals())
 
