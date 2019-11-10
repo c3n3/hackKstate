@@ -91,11 +91,13 @@ class controller():
             if (self.func == 'None'):
                 self.executable = self.executable[:self.index] + keyPressed + self.executable[self.index:]
                 self.display = self.display[:self.index] + keyPressed + self.display[self.index:]
+                self.index += 1
             else:
                 #If we are operating in a function, use the dynamic variable 'x'
                 if (keyPressed == "X"):
                     keyPressed = 'x'
                 self.display = self.display[:self.index] + keyPressed + self.display[self.index:]
+                self.index += 1
 
         #If the selection is off the screen, move the screens view until it aint
         while ((self.index < self.window[0]) or (self.index > self.window[1])):
@@ -205,6 +207,7 @@ class controller():
         self.output.set_cursor(cursor,0)
 
         self.output.add(self.display)
+        print(self.display)
 
 
 controller = controller()
