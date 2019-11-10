@@ -202,7 +202,9 @@ class controller():
 
         #set blinking cursor location in relation to the window
         cursor = self.index-self.window[0]
-        output.set_cursor(cursor,0)
+        self.output.set_cursor(cursor,0)
+
+        self.output.showMessage(self.display)
 
 
 controller = controller()
