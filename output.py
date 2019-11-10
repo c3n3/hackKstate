@@ -40,3 +40,6 @@ class output():
 
     def resetCursor(self):
         self.lcd.home()
+
+    def add(self,string):
+        self.lcd.message += string

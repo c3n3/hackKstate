@@ -204,7 +204,7 @@ class controller():
         cursor = self.index-self.window[0]
         self.output.set_cursor(cursor,0)
 
-        self.output.showMessage(self.display)
+        self.output.add(self.display)
 
 
 controller = controller()
