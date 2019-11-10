@@ -26,7 +26,7 @@ class lcdInterface():
         self.image = Image.new('RGB', (self.width, self.heigth))
         self.font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
         # Get drawing object to draw on image.
-        self.lines.append("8 + 9 * 7")
+        self.lines.append("")
         self._update()
     
     def graph3D(self, function):
@@ -38,11 +38,15 @@ class lcdInterface():
     def graph1D(self, function):
         draw = ImageDraw.Draw(self.image)
         draw.rectangle((0, 0, self.width, self.heigth), fill=(0, 0, 0))
-        drawGrid(draw)
+        self.drawGrid(draw)
         for x in range(0, self.width):
-            draw.point((x, 20*(120 - function(x))), fill=(255, 0, 0)) # plot the point if within the range
-            # use Image.Draw.point((x, y), color)
+            draw.point(((x), (120 - function(x - 160))), fill=(255, 0, 0)) # plot the point if within the range
+            draw.point(((x), (120 - function(x - 159))), fill=(255, 0, 0)) # plot the point if within the range
+            draw.point(((x), (120 - function(x - 161))), fill=(255, 0, 0)) # plot the point if within the range
+
+               # use Image.Draw.point((x, y), color)
         self.disp.image(self.image)
+        print("hello")
 
     def drawGrid(self, draw):
         for x in range(0, self.width):
@@ -83,10 +87,12 @@ class lcdInterface():
         self.lines.insert(0, "= " + result)
         self.shiftRowsUp()
 
-    def text(string):
+    def text(self,string):
         draw = ImageDraw.Draw(self.image)
-        draw.text((10,10), self.lines[x - 1],font=self.font, fill=(255, 255, 0, 255))
         draw.rectangle((0, 0, self.width, self.heigth), fill=(0, 0, 0))
+
+        draw.text((10,10), string,font=self.font, fill=(255, 255, 0, 255))
+        print("did it")
         self.disp.image(self.image)
         
     def toString(self):

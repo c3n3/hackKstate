@@ -46,10 +46,10 @@ class buttons():
                 ['2nd','X','Math','LEFT','UP'],
                 ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['^','sin(','cos(','tan(','/'],
-                ['LOG(','7','8','9','*'],
-                ['LN(','4','5','6','-'],
+                ['log(','7','8','9','*'],
+                ['ln(','4','5','6','-'],
                 ['=','1','2','3','+'],
-                ['DELETE','.','0',' ','ENTER'],
+                ['DELETE','.','0',',','ENTER'],
         ]
         self.ROW_PINS = [4,17,26,5,6,21,13] # BCM numbering
         self.COL_PINS = [18,20,23,16,12] # BCM numbering
@@ -62,13 +62,13 @@ class buttons():
                 ['2nd','X','Math','LEFT','UP'],
                 ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['^','sin(','cos(','tan(','/'],
-                ['LOG(', '7',  '8', '9',  '*'],
-                ['LN(', '4' ,' 5',  '6' , '-'],
+                ['log(', '7',  '8', '9',  '*'],
+                ['ln(', '4' ,' 5',  '6' , '-'],
                 ['=',  '1',  '2',  '3',   '+'],
-                ['DELETE','.','0',' ','ENTER']]
+                ['DELETE','.','0',',','ENTER']]
         self.secondkeys = [
                 ['2nd','X','Math','LEFT','UP'],
-                ['Alpha','(' ,')','DOWN','UP'],
+                ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['pi','asin(','acos(','atan(','/'],
                 ['10^(', '7',  '8', '9',  '*'],
                 ['e^(', '4' ,' 5',  '6' , '-'],
@@ -76,19 +76,24 @@ class buttons():
                 ['DELETE','.','0',' ','ENTER']]
         self.alphakeys = [
                 ['2nd','X','Math','LEFT','UP'],
-                ['Alpha','(' ,')','DOWN','UP'],
+                ['Alpha','(' ,')','DOWN','RIGHT'],
                 ['A',  'B',  'C',  'D'  , '/'],
                 ['E',  'F',  'G',  'H'  , '*'],
-                ['I',  'J',  'K',  'L'  , '-'],
+                ['I',  'J',  'Z',  'L'  , '-'],
                 ['=',  'M',  'N',  'O'  , '+'],
                 ['DELETE','P','Q',' ','ENTER']]
     def setHandler(self, function):
         self.keypad.registerKeyPressHandler(function)
 
-    def setKeys(self, newKeys):
-        self.keys = newKeys
-        self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
-
+    #def setKeys(self, newKeys):
+     #   self.keypad =  newKeys
+    def mapKey(self, state, key):
+        temp = self.alphakeys if state == "alpha" else self.secondkeys
+        for i, keys in enumerate(self.mainkeys):
+            for index, k in enumerate(keys):
+                if (key == k):
+                    return temp[i][index]
+"""
 Lcd = lcdInterface()
 things = buttons()
 Lcd.setFirstLine("Hello this is cool")
@@ -100,4 +105,4 @@ def out(thing):
 things.setHandler(out)
 
 while True:
-    time.sleep(.1)
+    time.sleep(.1)"""

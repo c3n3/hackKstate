@@ -1,7 +1,6 @@
 from math import *
 from fractions import Fraction      #lets me cleanly display fractions
 
-u = complex(0,1)
 
 """     These are all the imported functions from math module
 
@@ -91,7 +90,7 @@ class utility():
         #replace pretty things with functional things
         strfunction = strfunction.replace('^',"**")
         strfunction = strfunction.replace('ln',"log")
-        strfunction = strfunction.replace('i',"u")
+
 
         #add * sign between variables and numbers and paranthesis if necessary
         i = 0
@@ -206,11 +205,11 @@ class utility():
         else:
             return strfunction
 
-util = utility()
-util.setRadiansMode(True)
-func = util.convertStringToFunction("")
+#util = utility()
+#util.setRadiansMode(True)
+#func = util.convertStringToFunction("")
 
-print(util.executeStringFunction("cos(4)"))
+#print(util.executeStringFunction("cos(4)"))
 
 #util.convertStringToFunction("a=15")
 #print(A)
