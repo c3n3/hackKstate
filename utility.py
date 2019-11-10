@@ -82,7 +82,7 @@ class utility():
         strfunction = strfunction.replace(' ','')
 
         #check if its an assignment instead of an expression
-        if (strfunction != ""):
+        if (len(strfunction) >2):
             if (strfunction[1] == "="):
                 assignment = True
                 var = strfunction[0].upper()
@@ -120,6 +120,10 @@ class utility():
         strfunction = strfunction.replace('?',"factorial(")
         strfunction = strfunction.replace('@',")")
 
+        strfunction = strfunction.replace("cos*(", "cos(")
+        strfunction = strfunction.replace("sin*(", "sin(")
+        strfunction = strfunction.replace("tan*(", "tan(")
+
         #if in degrees mode, change degrees into radians for input and degrees into radians for output
         if (not self.radians):
             strfunction = strfunction.replace("cos(","cos((pi/180)*")
@@ -129,13 +133,16 @@ class utility():
             strfunction = strfunction.replace("asin(","(180/pi)*asin(")
             strfunction = strfunction.replace("atan(","(180/pi)*atan(")
 
+        #from math import cos
         if (not assignment):
             #create executable string
+            #print(strfunction)
             strlambda = "func = lambda x: " + strfunction + "+0*x"
+            #strlambda = "func = lambda x: " + "sin(4)" + "+0*x"
 
             #print(strlambda)
             #execute string and make func accessible again
-            exec(strlambda, globals())
+            exec(strlambda, globals(),globals())
 
             return func
 
@@ -203,7 +210,7 @@ util = utility()
 util.setRadiansMode(True)
 func = util.convertStringToFunction("")
 
-#print(util.executeStringFunction("A=2"))
+print(util.executeStringFunction("cos(4)"))
 
 #util.convertStringToFunction("a=15")
 #print(A)
