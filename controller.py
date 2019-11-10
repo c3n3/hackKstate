@@ -75,6 +75,8 @@ class controller():
             if (self.func == 'None'):
                 self.display = str(self.util.executeStringFunction(self.executable))
                 self.executable = ""
+                if (self.display == '0'):
+                    self.display = ""
             #If in a specific function, confirm you finished entering parameters and execute
             else:
                 entered = True
