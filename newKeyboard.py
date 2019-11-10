@@ -89,13 +89,13 @@ class buttons():
         self.keys = newKeys
         self.keypad = self.factory.create_keypad(keypad=self.keys, row_pins=self.ROW_PINS, col_pins=self.COL_PINS)
 
-Lcd = output()
-things = buttons()
-def out(thing):
-    print(thing)
-    Lcd.showMessage(thing)
-
-things.setHandler(out)
-
-while True:
-    time.sleep(.1)
+# Lcd = output()
+# things = buttons()
+# def out(thing):
+#     print(thing)
+#     Lcd.showMessage(thing)
+#
+# things.setHandler(out)
+#
+# while True:
+#     time.sleep(.1)
